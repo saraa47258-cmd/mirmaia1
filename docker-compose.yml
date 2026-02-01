@@ -1,0 +1,95 @@
+# Mirmaia POS - كل الخدمات على Docker
+# تشغيل واحد: docker-compose up -d --build
+
+services:
+  # قاعدة البيانات MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: mirmaia-db
+    environment:
+      MYSQL_ROOT_PASSWORD: mirmaia_root_2026
+      MYSQL_DATABASE: mirmaia_pos
+      MYSQL_USER: mirmaia_user
+      MYSQL_PASSWORD: mirmaia_pass123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/src/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - mirmaia_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pmirmaia_root_2026"]
+      interval: 5s
+      timeout: 10s
+      retries: 15
+      start_period: 30s
+    restart: unless-stopped
+
+  # خادم الـ API (Backend)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mirmaia-backend
+    environment:
+      DB_HOST: mysql
+      DB_USER: mirmaia_user
+      DB_PASSWORD: mirmaia_pass123
+      DB_NAME: mirmaia_pos
+      NODE_ENV: production
+      JWT_SECRET: your_super_secret_jwt_key_2026
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - backend_uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - mirmaia_network
+    restart: unless-stopped
+
+  # واجهة المستخدم (Frontend)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: http://localhost:3000
+    container_name: mirmaia-frontend
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
+    networks:
+      - mirmaia_network
+    restart: unless-stopped
+
+  # phpMyAdmin لإدارة قاعدة البيانات
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: mirmaia-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: mirmaia_root_2026
+      UPLOAD_LIMIT: 100M
+    ports:
+      - "8081:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - mirmaia_network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  backend_uploads:
+
+networks:
+  mirmaia_network:
+    driver: bridge

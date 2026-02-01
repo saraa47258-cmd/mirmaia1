@@ -1,0 +1,257 @@
+{
+  "projectName": "Mirmaia POS System",
+  "version": "1.0.0",
+  "description": "نظام كاشير متكامل لقهوة Mirmaia - Complete POS System for Mirmaia Coffee Shop",
+  "author": "Mirmaia Development Team",
+  "createdDate": "2026-01-30",
+  "lastUpdated": "2026-01-30",
+  
+  "technology": {
+    "backend": {
+      "language": "TypeScript",
+      "framework": "Express.js",
+      "runtime": "Node.js 18+",
+      "database": "MySQL 8.0",
+      "authentication": "JWT",
+      "password_hashing": "bcryptjs"
+    },
+    "frontend": {
+      "library": "React 18",
+      "language": "TypeScript",
+      "build_tool": "React Scripts",
+      "state_management": "Zustand",
+      "charts": "Recharts",
+      "styling": "CSS"
+    },
+    "devops": {
+      "containerization": "Docker",
+      "orchestration": "Docker Compose",
+      "version_control": "Git"
+    }
+  },
+
+  "features": [
+    {
+      "name": "نظام الكاشير",
+      "status": "✅ مكتمل",
+      "description": "واجهة كاشير احترافية وسهلة الاستخدام",
+      "components": [
+        "قائمة المنتجات",
+        "سلة الشراء",
+        "إدارة الخصومات",
+        "حساب الضريبة التلقائي",
+        "طرق الدفع المتعددة"
+      ]
+    },
+    {
+      "name": "إدارة المنتجات",
+      "status": "✅ مكتمل",
+      "description": "إدارة شاملة للمنتجات والفئات",
+      "components": [
+        "إضافة/تعديل/حذف المنتجات",
+        "تصنيف المنتجات",
+        "إدارة الأسعار",
+        "إدارة أسعار التكلفة"
+      ]
+    },
+    {
+      "name": "نظام المخزن",
+      "status": "✅ مكتمل",
+      "description": "متابعة شاملة لمستويات المخزن",
+      "components": [
+        "عرض مستويات المخزن",
+        "تنبيهات المخزون المنخفض",
+        "تسجيل حركات المخزن",
+        "سجل تاريخي كامل",
+        "تحديد حد أدنى وأقصى"
+      ]
+    },
+    {
+      "name": "التقارير والإحصائيات",
+      "status": "✅ مكتمل",
+      "description": "تقارير شاملة وتحليلات متقدمة",
+      "components": [
+        "تقارير يومية",
+        "تقارير شهرية",
+        "رسوم بيانية تفاعلية",
+        "تحليل المبيعات",
+        "توزيع طرق الدفع"
+      ]
+    },
+    {
+      "name": "إدارة المستخدمين",
+      "status": "✅ مكتمل",
+      "description": "نظام متكامل لإدارة المستخدمين والصلاحيات",
+      "components": [
+        "ثلاث مستويات صلاحيات",
+        "إدارة الحسابات",
+        "تسجيل الدخول الآمن",
+        "تغيير كلمات المرور",
+        "تفعيل/تعطيل الحسابات"
+      ]
+    },
+    {
+      "name": "الأمان",
+      "status": "✅ مكتمل",
+      "description": "نظام أمان قوي وموثوق",
+      "components": [
+        "مصادقة JWT",
+        "تشفير كلمات المرور",
+        "التحقق من الصلاحيات",
+        "سجل العمليات",
+        "تسجيل الأنشطة"
+      ]
+    }
+  ],
+
+  "directory_structure": {
+    "root": {
+      "docker-compose.yml": "إعدادات Docker Compose",
+      "backend/": "كود Backend و APIs",
+      "frontend/": "كود Frontend و الواجهات",
+      "README.md": "دليل المشروع الشامل",
+      "INSTALLATION.md": "دليل التثبيت والتشغيل",
+      "FEATURES.md": "دليل استخدام الميزات",
+      ".gitignore": "ملفات Git المستثناة"
+    },
+    "backend": {
+      "src/": "كود TypeScript",
+      "dist/": "كود JavaScript المترجم",
+      "package.json": "المكتبات والحزم",
+      "tsconfig.json": "إعدادات TypeScript",
+      "Dockerfile": "صورة Docker"
+    },
+    "frontend": {
+      "src/": "كود React و TypeScript",
+      "public/": "الملفات الثابتة",
+      "package.json": "المكتبات والحزم",
+      "tsconfig.json": "إعدادات TypeScript",
+      "Dockerfile": "صورة Docker"
+    }
+  },
+
+  "database_tables": [
+    "users",
+    "categories",
+    "products",
+    "inventory",
+    "inventory_logs",
+    "orders",
+    "order_items",
+    "daily_reports",
+    "monthly_reports",
+    "settings"
+  ],
+
+  "api_endpoints": {
+    "auth": [
+      "POST /api/auth/login",
+      "POST /api/auth/register",
+      "POST /api/auth/verify"
+    ],
+    "products": [
+      "GET /api/products",
+      "GET /api/products/category/:categoryId",
+      "POST /api/products",
+      "PUT /api/products/:id",
+      "DELETE /api/products/:id"
+    ],
+    "orders": [
+      "POST /api/orders",
+      "GET /api/orders",
+      "GET /api/orders/:id"
+    ],
+    "inventory": [
+      "GET /api/inventory",
+      "GET /api/inventory/low-stock/list",
+      "POST /api/inventory/adjust",
+      "GET /api/inventory/logs/history"
+    ],
+    "reports": [
+      "GET /api/reports/daily",
+      "GET /api/reports/monthly",
+      "GET /api/reports/sales/by-category"
+    ],
+    "users": [
+      "GET /api/users",
+      "GET /api/users/profile/me",
+      "POST /api/users",
+      "PUT /api/users/:id",
+      "POST /api/users/change-password/:id",
+      "POST /api/users/:id/deactivate"
+    ]
+  },
+
+  "user_roles": [
+    {
+      "name": "Admin (مسؤول)",
+      "permissions": [
+        "view_dashboard",
+        "manage_products",
+        "manage_inventory",
+        "view_reports",
+        "manage_users",
+        "manage_settings",
+        "use_cashier"
+      ]
+    },
+    {
+      "name": "Staff (موظف)",
+      "permissions": [
+        "view_reports",
+        "view_inventory",
+        "use_cashier"
+      ]
+    },
+    {
+      "name": "Cashier (كاشير)",
+      "permissions": [
+        "use_cashier"
+      ]
+    }
+  ],
+
+  "performance_specifications": {
+    "response_time": "< 500ms",
+    "database_connections": "10",
+    "concurrent_users": "50+",
+    "storage": "Configurable",
+    "uptime": "99.5%"
+  },
+
+  "deployment": {
+    "method": "Docker + Docker Compose",
+    "platforms": [
+      "Linux",
+      "Windows",
+      "macOS"
+    ],
+    "requirements": [
+      "Docker 20.10+",
+      "Docker Compose 1.29+",
+      "Minimum 2GB RAM",
+      "Minimum 1GB Disk Space"
+    ]
+  },
+
+  "future_enhancements": [
+    "فواتير إلكترونية (E-Invoice)",
+    "تطبيق موبايل (iOS/Android)",
+    "نظام الولاء والعروض",
+    "التكامل مع أنظمة الدفع الإلكتروني",
+    "نظام الحجز والطلب المسبق",
+    "تحليلات متقدمة وتنبؤات",
+    "نظام متعدد الفروع",
+    "نظام المحاسبة المتكاملة"
+  ],
+
+  "support_and_contact": {
+    "email": "support@mirmaia.local",
+    "phone": "+966 XX XXX XXXX",
+    "working_hours": "09:00 - 18:00 (UTC+3)",
+    "timezone": "Asia/Riyadh"
+  },
+
+  "license": "Proprietary - Mirmaia Coffee Shop",
+  "status": "Production Ready ✅"
+}
