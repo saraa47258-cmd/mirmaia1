@@ -54,6 +54,9 @@ services:
       - traefik.http.routers.mirmaia_api.tls.certresolver=le
       - traefik.http.routers.mirmaia_api.service=mirmaia_api
       - traefik.http.services.mirmaia_api.loadbalancer.server.port=3000
+      - traefik.http.routers.mirmaia_api_http.rule=Host(`api.mirmaia.store`)
+      - traefik.http.routers.mirmaia_api_http.entrypoints=web
+      - traefik.http.routers.mirmaia_api_http.service=mirmaia_api
 
   frontend:
     build:
@@ -75,11 +78,18 @@ services:
       - traefik.http.routers.mirmaia_pos.tls.certresolver=le
       - traefik.http.routers.mirmaia_pos.service=mirmaia_pos
       - traefik.http.services.mirmaia_pos.loadbalancer.server.port=3000
+      # نفس الواجهة على HTTP (للتشخيص)
+      - traefik.http.routers.mirmaia_pos_http.rule=Host(`pos.mirmaia.store`)
+      - traefik.http.routers.mirmaia_pos_http.entrypoints=web
+      - traefik.http.routers.mirmaia_pos_http.service=mirmaia_pos
       # الدومين الرئيسي → نفس الواجهة
       - traefik.http.routers.mirmaia_root.rule=Host(`mirmaia.store`)
       - traefik.http.routers.mirmaia_root.entrypoints=websecure
       - traefik.http.routers.mirmaia_root.tls.certresolver=le
       - traefik.http.routers.mirmaia_root.service=mirmaia_pos
+      - traefik.http.routers.mirmaia_root_http.rule=Host(`mirmaia.store`)
+      - traefik.http.routers.mirmaia_root_http.entrypoints=web
+      - traefik.http.routers.mirmaia_root_http.service=mirmaia_pos
 
   phpmyadmin:
     image: phpmyadmin:latest
