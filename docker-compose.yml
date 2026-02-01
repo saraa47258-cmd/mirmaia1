@@ -1,8 +1,7 @@
-# Mirmaia POS - كل الخدمات على Docker
-# تشغيل واحد: docker-compose up -d --build
+# Mirmaia POS - Behind Traefik (web network)
+# Deploy: copy to /srv/apps/mirmaia1/docker-compose.yml
 
 services:
-  # قاعدة البيانات MySQL
   mysql:
     image: mysql:8.0
     container_name: mirmaia-db
@@ -12,7 +11,7 @@ services:
       MYSQL_USER: mirmaia_user
       MYSQL_PASSWORD: mirmaia_pass123
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./backend/src/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -26,7 +25,6 @@ services:
       start_period: 30s
     restart: unless-stopped
 
-  # خادم الـ API (Backend)
   backend:
     build:
       context: ./backend
@@ -40,8 +38,6 @@ services:
       NODE_ENV: production
       JWT_SECRET: your_super_secret_jwt_key_2026
       PORT: 3000
-    ports:
-      - "3000:3000"
     volumes:
       - backend_uploads:/app/uploads
     depends_on:
@@ -49,25 +45,42 @@ services:
         condition: service_healthy
     networks:
       - mirmaia_network
+      - web
     restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mirmaia_api.rule=Host(`api.mirmaia.store`)
+      - traefik.http.routers.mirmaia_api.entrypoints=websecure
+      - traefik.http.routers.mirmaia_api.tls.certresolver=le
+      - traefik.http.routers.mirmaia_api.service=mirmaia_api
+      - traefik.http.services.mirmaia_api.loadbalancer.server.port=3000
 
-  # واجهة المستخدم (Frontend)
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        REACT_APP_API_URL: http://localhost:3000
+        REACT_APP_API_URL: https://api.mirmaia.store/api
     container_name: mirmaia-frontend
-    ports:
-      - "3001:3000"
     depends_on:
       - backend
     networks:
       - mirmaia_network
+      - web
     restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mirmaia_pos.rule=Host(`pos.mirmaia.store`)
+      - traefik.http.routers.mirmaia_pos.entrypoints=websecure
+      - traefik.http.routers.mirmaia_pos.tls.certresolver=le
+      - traefik.http.routers.mirmaia_pos.service=mirmaia_pos
+      - traefik.http.services.mirmaia_pos.loadbalancer.server.port=3000
+      # الدومين الرئيسي → نفس الواجهة
+      - traefik.http.routers.mirmaia_root.rule=Host(`mirmaia.store`)
+      - traefik.http.routers.mirmaia_root.entrypoints=websecure
+      - traefik.http.routers.mirmaia_root.tls.certresolver=le
+      - traefik.http.routers.mirmaia_root.service=mirmaia_pos
 
-  # phpMyAdmin لإدارة قاعدة البيانات
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: mirmaia-phpmyadmin
@@ -93,3 +106,5 @@ volumes:
 networks:
   mirmaia_network:
     driver: bridge
+  web:
+    external: true
