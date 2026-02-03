@@ -1,0 +1,93 @@
+# Mirmaia POS - VPS deployment behind Nginx Proxy Manager (NPM)
+# Copy .env.example to .env and set secure values before running.
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mirmaia-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-mirmaia_pos}
+      MYSQL_USER: ${MYSQL_USER:-mirmaia_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "127.0.0.1:${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/src/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - mirmaia_internal
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 10s
+      retries: 15
+      start_period: 30s
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mirmaia-backend
+    environment:
+      DB_HOST: mysql
+      DB_USER: ${MYSQL_USER:-mirmaia_user}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE:-mirmaia_pos}
+      NODE_ENV: production
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: 3000
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-3000}:3000"
+    volumes:
+      - backend_uploads:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - mirmaia_internal
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:3000/api}
+    container_name: mirmaia-frontend
+    depends_on:
+      - backend
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-3001}:3000"
+    networks:
+      - mirmaia_internal
+    restart: unless-stopped
+
+  # Optional: run with `--profile tools` only when needed
+  phpmyadmin:
+    profiles: ["tools"]
+    image: phpmyadmin:latest
+    container_name: mirmaia-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      UPLOAD_LIMIT: 100M
+    ports:
+      - "127.0.0.1:${PHPMYADMIN_PORT:-8081}:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - mirmaia_internal
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  backend_uploads:
+
+networks:
+  mirmaia_internal:
+    driver: bridge

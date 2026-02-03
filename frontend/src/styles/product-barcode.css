@@ -1,0 +1,71 @@
+/* مكوّن الباركود للمنتجات - منيو الزبائن */
+
+.product-barcode {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid rgba(44, 24, 16, 0.15);
+  min-height: 48px;
+}
+
+.product-barcode-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+}
+
+.product-barcode svg,
+.product-barcode canvas {
+  display: block !important;
+  max-width: 100%;
+  height: auto !important;
+  min-height: 36px;
+}
+
+.product-barcode--small {
+  padding: 0.45rem;
+  min-height: 44px;
+}
+
+.product-barcode--small .product-barcode-inner {
+  min-height: 40px;
+}
+
+.product-barcode--medium {
+  padding: 0.6rem;
+}
+
+.product-barcode--large {
+  padding: 0.75rem;
+}
+
+.product-barcode-code {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.7rem;
+  font-family: monospace;
+  color: #5c4033;
+  letter-spacing: 0.08em;
+}
+
+.product-barcode-label {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.7rem;
+  color: #7d6e63;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-barcode--medium .product-barcode-label,
+.product-barcode--large .product-barcode-label {
+  font-size: 0.8rem;
+}

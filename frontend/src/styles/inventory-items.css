@@ -1,0 +1,296 @@
+/* ============================================
+   صفحة مواد المخزون وربط المنتجات — تصميم احترافي
+   ============================================ */
+
+/* --- الهيدر والوصف --- */
+.inv-items-page .inv-page-header {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.inv-items-page .inv-page-header h1 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.inv-items-page .inv-page-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+/* --- التبويبات --- */
+.inv-items-page .inv-tabs {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1.5rem;
+  padding: 0.25rem;
+  background: var(--bg-hover);
+  border-radius: var(--border-radius);
+  width: fit-content;
+  border: 1px solid var(--border-color);
+}
+
+.inv-items-page .inv-tabs button {
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.inv-items-page .inv-tabs button:hover {
+  color: var(--text-primary);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.inv-items-page .inv-tabs button.active {
+  color: var(--primary-dark);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+/* --- البطاقات (الأقسام) --- */
+.inv-items-page .inv-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-light);
+}
+
+.inv-items-page .inv-card h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.inv-items-page .inv-card .inv-card-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: -0.5rem 0 1rem 0;
+  line-height: 1.5;
+}
+
+/* --- النماذج --- */
+.inv-items-page .inv-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.75rem 1rem;
+  align-items: flex-end;
+}
+
+.inv-items-page .inv-form .inv-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.inv-items-page .inv-form .inv-field.inv-field-wide {
+  grid-column: 1 / -1;
+}
+
+.inv-items-page .inv-form label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.inv-items-page .inv-form input,
+.inv-items-page .inv-form select {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-size: 0.9rem;
+  background: var(--bg-main);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.inv-items-page .inv-form input:focus,
+.inv-items-page .inv-form select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-bg);
+  background: var(--bg-card);
+}
+
+.inv-items-page .inv-form .inv-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* --- الأزرار --- */
+.inv-items-page .btn-primary {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.inv-items-page .btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.inv-items-page .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.inv-items-page .btn-secondary {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.inv-items-page .btn-secondary:hover {
+  background: var(--border-color);
+  color: var(--text-primary);
+}
+
+.inv-items-page .btn-danger {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--danger);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.inv-items-page .btn-danger:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.inv-items-page .inv-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.inv-items-page .inv-adjust-input {
+  width: 4rem;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.85rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+}
+
+/* --- الجدول داخل الصفحة --- */
+.inv-items-page .inv-card .modern-inventory-table {
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+}
+
+.inv-items-page .inv-card .modern-inventory-table thead th {
+  background: var(--bg-hover);
+  font-size: 0.8rem;
+  text-transform: none;
+  padding: 0.75rem 1rem;
+}
+
+.inv-items-page .inv-card .modern-inventory-table tbody td {
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+}
+
+.inv-items-page .inv-qty-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.inv-items-page .inv-qty-badge.normal {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.inv-items-page .inv-qty-badge.low {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+/* --- الحالة الفارغة --- */
+.inv-items-page .inv-empty {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  color: var(--text-muted);
+  background: var(--bg-hover);
+  border-radius: var(--border-radius);
+  border: 1px dashed var(--border-color);
+  margin-top: 1rem;
+}
+
+.inv-items-page .inv-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.6;
+}
+
+.inv-items-page .inv-empty p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* --- تسمية "وحدة لكل طلب" بجانب الحقل --- */
+.inv-items-page .inv-inline-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  align-self: center;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .inv-items-page .inv-tabs {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .inv-items-page .inv-tabs button {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .inv-items-page .inv-form {
+    grid-template-columns: 1fr;
+  }
+}
